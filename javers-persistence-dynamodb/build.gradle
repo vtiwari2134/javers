@@ -1,0 +1,19 @@
+dependencies {
+    compile project(':javers-core')
+    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.106'
+
+    testCompile project(path: ":javers-core", configuration: "testArtifacts")
+}
+
+task integrationTest(type: Test) {
+    filter {
+        includeTestsMatching 'org.javers.repository.dynamodb.integration.**'
+    }
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+test {
+    exclude 'org/javers/repository/dynamodb/integration/**'
+}

@@ -3,6 +3,7 @@ dependencies {
     compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.106'
 
     testCompile project(path: ":javers-core", configuration: "testArtifacts")
+    testCompile "com.google.guava:guava:$guavaVersion"
 }
 
 task integrationTest(type: Test) {

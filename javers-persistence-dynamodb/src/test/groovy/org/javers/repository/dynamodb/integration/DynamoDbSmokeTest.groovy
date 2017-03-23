@@ -1,9 +1,5 @@
 package org.javers.repository.dynamodb.integration
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider
-import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.client.builder.AwsClientBuilder
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.dynamodbv2.document.Item
 import com.amazonaws.services.dynamodbv2.document.Table
@@ -16,14 +12,7 @@ class DynamoDbSmokeTest extends Specification {
     @Shared DynamoDB dynamoDB
 
     void setupSpec() {
-        def credentials = new AWSStaticCredentialsProvider(new BasicAWSCredentials('eee', 'eee'))
-        def client = AmazonDynamoDBClientBuilder
-                .standard()
-                .withEndpointConfiguration(
-                    new AwsClientBuilder.EndpointConfiguration('http://localhost:8000', 'us-west-2'))
-                .withCredentials(credentials)
-                .build()
-        dynamoDB = new DynamoDB(client)
+        dynamoDB = DynamoDbClientFactory.createLocalDbClient()
     }
 
     def 'should write & read from DynamoDB'(){

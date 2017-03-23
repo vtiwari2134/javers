@@ -1,5 +1,6 @@
 package org.javers.repository.dynamodb;
 
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import org.javers.core.commit.Commit;
 import org.javers.core.commit.CommitId;
 import org.javers.core.json.JsonConverter;
@@ -21,6 +22,11 @@ import java.util.Set;
  */
 public class DynamoRepository implements JaversRepository {
     private JsonConverter jsonConverter;
+    private final DynamoDB dynamoDB;
+
+    public DynamoRepository(DynamoDB dynamoDB) {
+        this.dynamoDB = dynamoDB;
+    }
 
     @Override
     public List<CdoSnapshot> getStateHistory(GlobalId globalId, QueryParams queryParams) {

@@ -1265,7 +1265,7 @@ class JaversRepositoryE2ETest extends Specification {
       SnapshotIdentifier.from(snapshots[1]) == SnapshotIdentifier.from(snapshots[0]).previous()
     }
 
-    def "should delete VOs when withdrawing commit annihilates entity that owned them"() {
+    def "should delete VO snapshots when withdrawing commit with the only snapshot of entity that owned these VOs"() {
       given:
       def entity = new SnapshotEntity(id: 1);
       def commit = javers.commit("a", entity);

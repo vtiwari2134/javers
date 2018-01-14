@@ -23,9 +23,9 @@ class SnapshotEntity {
 
     int intProperty
 
-    private SnapshotEntity entityRef
+    SnapshotEntity entityRef
 
-    private DummyAddress valueObjectRef
+    DummyAddress valueObjectRef
 
     Integer[] arrayOfIntegers
     int[] arrayOfInts
@@ -76,13 +76,5 @@ class SnapshotEntity {
     @Id
     int getId() {
         id
-    }
-
-    SnapshotEntity getEntityRef() {
-        entityRef
-    }
-
-    void setEntityRef(SnapshotEntity entityRef) {
-        this.entityRef = entityRef
     }
 }

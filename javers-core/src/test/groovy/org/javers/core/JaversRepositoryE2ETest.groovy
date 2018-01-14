@@ -1217,4 +1217,66 @@ class JaversRepositoryE2ETest extends Specification {
       snapshots.size() == 3
       snapshots.every{it.commitId.majorId == 1 || it.commitId.majorId == 4}
     }
+
+    def "should delete snapshot from withdrawn commit"() {
+      given:
+      def entity = new SnapshotEntity(id: 1);
+      def commit = javers.commit("a", entity);
+
+      when:
+      javers.withdrawCommit(commit.id)
+      def snapshots = javers.findSnapshots(byClass(SnapshotEntity).build())
+
+      then:
+      snapshots.size() == 0
+    }
+
+    def "should made next snapshot initial when withdrawing commit with current initial snapshot"() {
+      given:
+      def entity = new SnapshotEntity(id: 1, intProperty: 1);
+      javers.commit("a", entity);
+      entity.intProperty = 2
+      def commit = javers.commit("a", entity);
+
+      when:
+      javers.withdrawCommit(commit.id)
+      def snapshots = javers.findSnapshots(byClass(SnapshotEntity).build())
+
+      then:
+      snapshots.size() == 1
+      snapshots[0].type == INITIAL
+    }
+
+    def "should update recent snapshot identifiers when withdrawing commit with not the most recent snapshot"() {
+      given:
+      def entity = new SnapshotEntity(id: 1, intProperty: 1);
+      javers.commit("a", entity);
+      entity.intProperty = 2
+      def commit = javers.commit("a", entity);
+      entity.intProperty = 3
+      javers.commit("a", entity);
+
+      when:
+      javers.withdrawCommit(commit.id)
+      def snapshots = javers.findSnapshots(byClass(SnapshotEntity).build())
+
+      then:
+      snapshots.size() == 2
+      SnapshotIdentifier.from(snapshots[1]) == SnapshotIdentifier.from(snapshots[0]).previous()
+    }
+
+    def "should delete VOs when withdrawing commit annihilates entity that owned them"() {
+      given:
+      def entity = new SnapshotEntity(id: 1);
+      def commit = javers.commit("a", entity);
+      entity.valueObjectRef = new DummyAddress(city:"Rome")
+      javers.commit("a", entity);
+
+      when:
+      javers.withdrawCommit(commit.id)
+      def snapshots = javers.findSnapshots(byValueObject(SnapshotEntity, "valueObjectRef").build())
+
+      then:
+      snapshots.size() == 0
+    }
 }

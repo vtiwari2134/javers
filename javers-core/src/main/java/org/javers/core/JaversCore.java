@@ -8,6 +8,7 @@ import org.javers.core.changelog.ChangeListTraverser;
 import org.javers.core.changelog.ChangeProcessor;
 import org.javers.core.commit.Commit;
 import org.javers.core.commit.CommitFactory;
+import org.javers.core.commit.CommitId;
 import org.javers.core.diff.Change;
 import org.javers.core.diff.Diff;
 import org.javers.core.diff.DiffFactory;
@@ -125,6 +126,11 @@ class JaversCore implements Javers {
         repository.persist(commit);
         logger.info(commit.toString());
         return commit;
+    }
+
+    @Override
+    public void withdrawCommit(CommitId commitId) {
+        // TODO: implement
     }
 
     @Override

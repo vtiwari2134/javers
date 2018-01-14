@@ -6,6 +6,7 @@ import org.javers.common.validation.Validate;
 import org.javers.core.Javers;
 import org.javers.core.changelog.ChangeProcessor;
 import org.javers.core.commit.Commit;
+import org.javers.core.commit.CommitId;
 import org.javers.core.diff.Change;
 import org.javers.core.diff.Diff;
 import org.javers.core.diff.changetype.PropertyChange;
@@ -87,6 +88,12 @@ public class JaversTransactionalDecorator implements Javers {
     @Transactional
     public Commit commitShallowDeleteById(String author, GlobalIdDTO globalId, Map<String, String> properties) {
         return delegate.commitShallowDeleteById(author, globalId, properties);
+    }
+
+    @Override
+    @Transactional
+    public void withdrawCommit(CommitId commitId) {
+        delegate.withdrawCommit(commitId);
     }
 
     @Override

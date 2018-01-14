@@ -2,6 +2,7 @@ package org.javers.core;
 
 import org.javers.core.changelog.ChangeProcessor;
 import org.javers.core.commit.Commit;
+import org.javers.core.commit.CommitId;
 import org.javers.core.commit.CommitMetadata;
 import org.javers.core.diff.Change;
 import org.javers.core.diff.Diff;
@@ -103,6 +104,14 @@ public interface Javers {
      * See {@link #commit(String, Object, Map)} for commitProperties description.
      */
     Commit commitShallowDeleteById(String author, GlobalIdDTO globalId, Map<String, String> commitProperties);
+
+    /**
+     * TODO: rewrite when the implementation is done
+     * Effectively deletes from JaVers repository the commit with a given id and snapshots linked with this commit.
+     * It's not yet set if the commit and snapshots will be removed completely or if they stay in repo marked as withdrawn.
+     * Second option changes the data model and it seems more laborious so for now it's less probable.
+     */
+    void withdrawCommit(CommitId commitId);
 
     /**
      * <h2>Deep compare</h2>
